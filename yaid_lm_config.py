@@ -24,7 +24,13 @@ model.eval()
 lm = model.language_model
 GenerationConfig = lm.generation_config
 lm._prepare_special_tokens(GenerationConfig, False, device=device)
+
+GenerationConfig.d_model = lm.config.d_model
+GenerationConfig.decoder_layers = lm.config.decoder_layers
+GenerationConfig.decoder_attention_heads = lm.config.decoder_attention_heads
+
 out = vars(GenerationConfig)
+
 for a in out:
     if isinstance(out[a],torch.Tensor):
         out[a] = int(out[a])
